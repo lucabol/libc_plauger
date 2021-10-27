@@ -4,14 +4,14 @@
 #ifndef _YVALS
 #include <yvals.h>
 #endif
-		/* macros */
-#define NULL	_NULL
-		/* type definitions */
+        /* macros */
+#define NULL    _NULL
+        /* type definitions */
 #ifndef _SIZET
 #define _SIZET
 typedef _Sizet size_t;
 #endif
-		/* declarations */
+        /* declarations */
 void *memchr(const void *, int, size_t);
 int memcmp(const void *, const void *, size_t);
 void *memcpy(void *, const void *, size_t);
@@ -35,6 +35,6 @@ char *strstr(const char *, const char *);
 char *strtok(char *, const char *);
 size_t strxfrm(char *, const char *, size_t);
 char *_Strerror(int, char *);
-		/* macro overrides */
-#define strerror(errcode)	_Strerror(errcode, _NULL)
+        /* macro overrides */
+#define strerror(errcode)   _Strerror(errcode, _NULL)
 #endif

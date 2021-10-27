@@ -3,7 +3,7 @@
 #include <signal.h>
 
 void (abort)(void)
-	{	/* terminate abruptly */
-	raise(SIGABRT);
-	exit(EXIT_FAILURE);
-	}
+    {   /* terminate abruptly */
+    raise(SIGABRT);
+    exit(EXIT_FAILURE);
+    }

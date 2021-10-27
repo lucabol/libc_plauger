@@ -1,35 +1,57 @@
-CFLAGS = -std=c89 -nostdinc -nostdlib -ffreestanding -c -O2
+CFLAGS = -nostdlib -fno-builtin -ffreestanding -g
+INC_DIRS = -I ./_headers -I ./_linux
 CC = gcc
-LD = ld
 
 INSTALL = install
 
-TARGET = libc.a
+TARGET = libc_plauger.a
 DIR_OBJ = ./obj
-OUT_DIR = ./bin
 
-SUBDIR = assert ctype errno float locale math signal stdio stdlib string time _tc86 #setjmp
+SUBDIR = assert ctype errno float locale math signal stdio stdlib string time _linux setjmp
 
-SRCS = $(wildcard *.c $(foreach fd, $(SUBDIR), $(fd)/*.c))
+SRCS = $(wildcard $(foreach fd, $(SUBDIR), $(fd)/*.c))
 OBJS = $(addprefix $(DIR_OBJ)/, $(SRCS:c=o))
-INC_DIR = -I ./_headers
+NODIR_SRC = $(notdir $(SRCS))
 
-$(DIR_OBJ)/%.o: %.c $(INCS)
+TESTS_SRC = $(wildcard _test/*.c)
+GTESTS = $(foreach f, $(TESTS_SRC), gtest/$(notdir $(basename $(f))))
+TESTS = $(foreach f, $(TESTS_SRC), test/$(notdir $(basename $(f))))
+
+$(DIR_OBJ)/%.o: %.c $(DIR_OBJ)
 	mkdir -p $(@D)
-	$(CC) -o $@ -c $< $(CFLAGS) $(INC_DIR)
+	$(CC) -o $@ -c $< $(INC_DIRS) $(CFLAGS)
 
 $(TARGET): $(OBJS)
-	mkdir -p $(OUT_DIR)
-	ar cr $(OUT_DIR)/$@ $^
+	ar cr $@ $^
+
+gtest/%: _test/%.c
+	mkdir -p gtest
+	$(CC) -o $@ $< -lm
+
+$(DIR_OBJ):
+	mkdir -p $@
+
+test/%: _test/%.c $(TARGET)
+	mkdir -p test
+	$(CC) $(CFLAGS) $(INC_DIRS) -o $@ -fno-asynchronous-unwind-tables -fno-ident -s -Os -static $< $(TARGET)
+
+PHONY += gtest
+gtest: $(GTESTS)
+
+PHONY += test
+test: $(TESTS)
 
 PHONY += clean
 clean:
-	rm -rf $(OUT_DIR) $(DIR_OBJ)
+	rm -rf $(DIR_OBJ)
+	rm -f $(TARGET)
+	rm -f test
 
 PHONY += echoes
 echoes:
 	echo $(DIR_OBJ)
 	echo $(SRCS)
 	echo $(OBJS)
+	echo $(GTESTS)
 
-PHONY += echoes
+.PHONY = PHONY

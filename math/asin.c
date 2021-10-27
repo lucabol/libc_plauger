@@ -2,6 +2,6 @@
 #include <math.h>
 
 double (asin)(double x)
-	{	/* compute asin(x) */
-	return (_Asin(x, 0));
-	}
+    {   /* compute asin(x) */
+    return (_Asin(x, 0));
+    }
