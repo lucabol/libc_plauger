@@ -1,4 +1,4 @@
-/* yvals.h values header -- UNIX 680X0 version */
+/* yvals.h values header -- x64 version */
 #define _YVALS
         /* errno properties */
 #define _EDOM   33
@@ -17,14 +17,12 @@
 #define _LOFF   4
         /* integer properties */
 #define _C2     1
-#define _CSIGN  1
-#define _ILONG  1
-#define _MBMAX  8
-typedef unsigned short _Wchart;
+#define _MBMAX  4
+typedef int _Wchart;
         /* pointer properties */
 #define _NULL   (void *)0
-typedef int _Ptrdifft;
-typedef unsigned int _Sizet;
+typedef long int _Ptrdifft;
+typedef long unsigned int _Sizet;
         /* setjmp properties */
 #define _NSETJMP    80
 #define _JBFP 1

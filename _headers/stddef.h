@@ -6,8 +6,9 @@
 #endif
         /* macros */
 #define NULL    _NULL
-#define offsetof(T, member) ((_Sizet)&((T *)0)->member)
-        /* type definitions */
+#define offsetof(type, member) ((size_t)( (char *)&(((type *)0)->member) - (char *)0 ))
+
+/* type definitions */
 #ifndef _SIZET
 #define _SIZET
 typedef _Sizet size_t;
